@@ -9,25 +9,25 @@ TODO: Cloud storage for family use.
 Scenario: Upload a recipe for OCR -> extract text from image -> process text as data stream -> input into database
 
 App features:
-    - user authentication/authorization  
-    - upload images (multipart box)  
-    - image OCR (ML engine using trained model)  
-      - for image  
-      - for pdf (TODO): pdf from bank statement, logic for this part is completely different from receipts  
-    - process text  
-      - OCR output is a list of extracted text  
-      - need to process text accordingly  
-        - factory design pattern  
-        - user interface: get_image, run_ocr, process_orc_text, write_to_database  
-        - may need to write a class for each store for text processing  
-    - user data visualization  
-      - family spend/earn total  
-        - per day/month/year  
-      - user spend/earn total  
-        - per day/month/year  
-    - view receipts  
-      - list all receipts for current user  
-      - may need pagination  
+- user authentication/authorization  
+- upload images (multipart box)  
+- image OCR (ML engine using trained model)  
+  - for image  
+  - for pdf (TODO): pdf from bank statement, logic for this part is completely different from receipts  
+- process text  
+  - OCR output is a list of extracted text  
+  - need to process text accordingly  
+    - factory design pattern  
+    - user interface: get_image, run_ocr, process_orc_text, write_to_database  
+    - may need to write a class for each store for text processing  
+- user data visualization  
+  - family spend/earn total  
+    - per day/month/year  
+  - user spend/earn total  
+    - per day/month/year  
+- view receipts  
+  - list all receipts for current user  
+  - may need pagination  
 
 Services:  
     - user login/sign up  
