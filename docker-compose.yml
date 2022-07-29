@@ -17,6 +17,7 @@ services:
       - DB_NAME=devdb
       - DB_USER=devuser
       - DB_PASS=secret
+      - DJANGO_SECURITY_KEY='this%is$just#a@testing'
       - DEBUG=1
     depends_on:
       - db
