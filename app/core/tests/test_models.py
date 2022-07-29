@@ -1,8 +1,12 @@
 """
 Tests for models.
 """
+from decimal import Decimal
+from datetime import date
 from django.test import TestCase
 from django.contrib.auth import get_user_model
+
+from core import models
 
 
 class ModelTests(TestCase):
@@ -46,3 +50,19 @@ class ModelTests(TestCase):
 
         self.assertTrue(user.is_superuser)
         self.assertTrue(user.is_staff)
+
+    def test_create_receipt(self):
+        """Test creating a recipe is successful."""
+        user = get_user_model().objects.create_user(
+            'test@example.com',
+            'testpass123',
+        )
+        receipt = models.Receipt.objects.create(
+            user=user,
+            date_received = date.today(),
+            date_uploaded = date.today(),
+            store = 'Walmart',
+            total = Decimal('12.34'),
+        )
+
+        self.assertEqual(str(receipt), f"store: {receipt.store}, total = {receipt.total}")

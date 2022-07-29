@@ -1,4 +1,7 @@
+from datetime import date
+
 from django.db import models
+from django.conf import settings
 from django.contrib.auth.models import (
     AbstractBaseUser,
     BaseUserManager,
@@ -41,3 +44,20 @@ class User(AbstractBaseUser, PermissionsMixin):
     objects = UserManager()
 
     USERNAME_FIELD = 'email'
+
+
+class Receipt(models.Model):
+    """
+    Receipt object.
+    """
+    user = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        on_delete=models.CASCADE,
+    )
+    date_received = models.DateField(verbose_name="date-received", null=True, blank=True, default=date.today)
+    date_uploaded = models.DateTimeField(verbose_name="date-uploaded", auto_now=True)
+    store = models.CharField(max_length=50, null=True, blank=True, default="House")
+    total = models.DecimalField(max_digits=8, decimal_places=2, blank=True, default=0)
+
+    def __str__(self) -> str:
+        return f"store: {self.store}, total = {self.total}"
