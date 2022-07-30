@@ -13,5 +13,15 @@ class ReceiptSerializers(serializers.ModelSerializer):
 
     class Meta:
         model = Receipt
-        fields = '__all__'
+        fields = ['id', 'date_received', 'store', 'total']
         read_only_fields = ['id']
+
+
+class ReceiptDetailSerializers(ReceiptSerializers):
+    """
+    Serializer for receipt detail view
+    Receipt detail contains receipt image link
+    """
+
+    class Meta(ReceiptSerializers.Meta):
+        fields = ReceiptSerializers.Meta.fields

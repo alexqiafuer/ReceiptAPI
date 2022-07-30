@@ -13,11 +13,15 @@ from rest_framework.test import APIClient
 
 from core.models import Receipt
 
-from receipt.serializer import ReceiptSerializers
+from receipt.serializer import ReceiptSerializers, ReceiptDetailSerializers
 
 
 RECEIPT_URL = reverse('receipt:receipt-list')
 
+
+def detail_url(receipt_id):
+    """Create and return a receipt detail URL."""
+    return reverse('receipt:receipt-detail', args=[receipt_id])
 
 def create_receipt(user, **params):
     """Create and return a sample receipt."""
@@ -83,3 +87,28 @@ class PrivateReceiptApiTests(TestCase):
         serializer = ReceiptSerializers(receipts, many=True)
         self.assertEqual(res.status_code, status.HTTP_200_OK)
         self.assertEqual(res.data, serializer.data)
+    
+    def test_get_receipt_detail(self):
+        """Test get receipt detail."""
+        receipt = create_receipt(user=self.user)
+
+        url = detail_url(receipt.id)
+        res = self.client.get(url)
+
+        serializer = ReceiptDetailSerializers(receipt)
+        self.assertEqual(res.data, serializer.data)
+
+    def test_create_receipt(self):
+        """Test creating a receipt."""
+        payload = {
+            'date_received': date.today(),
+            'total': Decimal('127.21'),
+            'store': 'Walmart2',
+        }
+        res = self.client.post(RECEIPT_URL, payload)
+
+        self.assertEqual(res.status_code, status.HTTP_201_CREATED)
+        receipt = Receipt.objects.get(id=res.data['id'])
+        for k, v in payload.items():
+            self.assertEqual(getattr(receipt, k), v)
+        self.assertEqual(receipt.user, self.user)
