@@ -2,12 +2,25 @@
 Views for receipts APIs
 """
 
-from rest_framework import viewsets
+
+from rest_framework import viewsets, mixins
 from rest_framework.authentication import TokenAuthentication
 from rest_framework.permissions import IsAuthenticated
 
-from core.models import Receipt
+from core.models import Receipt, Item
 from receipt import serializer
+
+
+class ItemViewSet(mixins.ListModelMixin, viewsets.GenericViewSet):
+    """Manage ingredients in the database."""
+    serializer_class = serializer.ItemSerializers
+    queryset = Item.objects.all()
+    authentication_classes = [TokenAuthentication]
+    permission_classes = [IsAuthenticated]
+
+    def get_queryset(self):
+        """Filter queryset to authenticated user."""
+        return self.queryset.filter(user=self.request.user).order_by('-name')
 
 
 class ReceiptViewSet(viewsets.ModelViewSet):

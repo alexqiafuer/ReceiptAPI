@@ -58,6 +58,22 @@ class Receipt(models.Model):
     date_uploaded = models.DateTimeField(verbose_name="date-uploaded", auto_now=True)
     store = models.CharField(max_length=50, null=True, blank=True, default="House")
     total = models.DecimalField(max_digits=8, decimal_places=2, blank=True, default=0)
+    items = models.ManyToManyField('Item')
 
     def __str__(self) -> str:
         return f"store: {self.store}, total = {self.total}"
+
+
+class Item(models.Model):
+    """
+    Item in receipt
+    """
+    name = models.CharField(max_length=255)
+    price = models.DecimalField(max_digits=5, decimal_places=2, default=1)
+    user = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        on_delete=models.CASCADE,
+    )
+
+    def __str__(self) -> str:
+        return self.name

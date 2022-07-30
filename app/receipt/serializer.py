@@ -4,7 +4,16 @@ Serializers for receipt APIs
 
 from rest_framework import serializers
 
-from core.models import Receipt
+from core.models import Receipt, Item
+
+
+class ItemSerializers(serializers.ModelSerializer):
+    """Serializer for ingredients."""
+
+    class Meta:
+        model = Item
+        fields = ['id', 'name', 'price']
+        read_only_fields = ['id']
 
 class ReceiptSerializers(serializers.ModelSerializer):
     """

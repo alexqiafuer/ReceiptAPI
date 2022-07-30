@@ -10,6 +10,7 @@ from receipt import views
 
 router = DefaultRouter()
 router.register('receipts', views.ReceiptViewSet)
+router.register('items', views.ItemViewSet)
 
 app_name = 'receipt'
 
